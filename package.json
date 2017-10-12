@@ -5,7 +5,10 @@
   "description": "Enable checkin command in slack",
   "scripts": {
     "start:dev": "DEBUG=slack-checkin-app:* nodemon ./bin/www",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "db:create": "sequelize db:create",
+    "db:migrate": "sequelize db:migrate",
+    "db:seed": "sequelize db:seed"
   },
   "repository": {
     "type": "git",
