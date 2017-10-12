@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('Courses', [
       {
         name: 'web-080717',
-        startDate: '2017-08-07',
+        startDate: new Date('2017-08-07'),
         createdAt: new Date(),
         updatedAt: new Date()
       }

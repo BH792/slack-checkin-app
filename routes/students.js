@@ -2,9 +2,15 @@ const express = require('express');
 const router = express.Router();
 const studentsController = require('../server/controllers').students;
 
+const Student = require('../server/models').Student;
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  res.send('respond with a resource');
+  Student.findAll({
+    where: {
+      courseId: 1
+    }
+  })
+    .then(arr => res.send(arr))
 });
 
 router.post('/', studentsController.create);
