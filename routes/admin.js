@@ -10,7 +10,20 @@ function setPayloadOnBody(req, res, next) {
 }
 
 router.post('/', setPayloadOnBody, slackVerification)
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
+  if (adminMenuRouter[req.body.callback_id]) {
+    adminMenuRouter[req.body.callback_id](req, res, next)
+  } else {
+    res.send('Sorry, that appears to be an invalid request')
+  }
+})
+
+const adminMenuRouter = {
+  courseSelection: courseSelection,
+  checkinValidation: checkinValidation
+}
+
+function courseSelection(req, res, next) {
   const courseName = req.body.actions[0].selected_options[0].value;
   Course.findOne({
     where: {name: courseName},
@@ -40,6 +53,10 @@ router.post('/', (req, res) => {
       })
       res.send(interactiveMsg.checkinValidation(courseName, checkins))
     })
-})
+}
+
+function checkinValidation(req, res, next) {
+  res.send(`Successfully validated for ${req.body.requestTime.toLocaleDateString()}`)
+}
 
 module.exports = router;
