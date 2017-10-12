@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     courseId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     slackId: {
@@ -17,7 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   Student.associate = (models) => {
     Student.belongsTo(models.Course, {
       foreignKey: 'courseId',
-    })
+    });
+    Student.hasMany(models.Checkin, {
+      foreignKey: 'studentId',
+      as: 'checkins'
+    });
   }
   return Student;
 };
