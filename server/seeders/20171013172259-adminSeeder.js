@@ -50,7 +50,7 @@ module.exports = {
         slackId: 'U51LJ5YLE',
         createdAt: new Date(),
         updatedAt: new Date()
-      },
+      }
   },
 
   down: (queryInterface, Sequelize) => {
@@ -78,6 +78,6 @@ module.exports = {
       },
       {
         name: 'Terrance Koar'
-      },
+      }
   }
 };
