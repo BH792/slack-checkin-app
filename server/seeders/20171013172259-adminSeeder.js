@@ -51,6 +51,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }
+    ])
   },
 
   down: (queryInterface, Sequelize) => {
@@ -79,5 +80,6 @@ module.exports = {
       {
         name: 'Terrance Koar'
       }
+    ])
   }
 };
