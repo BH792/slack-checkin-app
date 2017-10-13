@@ -33,7 +33,7 @@ const menu = {
 }
 //
 const checkinValidation = (courseName, checkinsList, absences) => {
-  let text = "```Name" + ' '.repeat(52) + "Time\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
+  let text = "```Name" + ' '.repeat(42) + "Time\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
   return {
     "text": `Validate Attendance for ${courseName}`,
     "attachments": [

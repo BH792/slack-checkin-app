@@ -47,8 +47,8 @@ function courseSelection(req, res, next) {
       let checkins = course.checkins.map(checkin => {
         // 60 char width message
         let name = checkin.Student.name
-        let space = checkin.Student.name.length < 52 ?
-                    ' '.repeat(52 - checkin.Student.name.length) :
+        let space = checkin.Student.name.length < 42 ?
+                    ' '.repeat(42 - checkin.Student.name.length) :
                     ' '
         let time = checkin.time.toLocaleTimeString()
         delete students[name]

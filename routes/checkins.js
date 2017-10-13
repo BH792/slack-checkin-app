@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Student, Course, Checkin } = require('../server/models')
+const { Student, Course, Checkin, Admin } = require('../server/models')
 const slackVerification = require('../libs/slackTokenVerification')
 const adminMenu = require('../libs/slackInteractiveMsg').menu
 
@@ -28,6 +28,19 @@ function findStudent(req, res, next) {
     })
 }
 
+function findAdmin(req, res, next) {
+  Admin.findOne({
+    where: {slackId: req.body.user_id}
+  })
+    .then(result => {
+      if (result) {
+        res.json(adminMenu)
+      } else {
+        next()
+      }
+    })
+}
+
 function checkinStudent(req, res, next) {
   Checkin.findOne({
     where: {
@@ -44,7 +57,7 @@ function checkinStudent(req, res, next) {
     })
 }
 
-router.post('/', slackVerification, admin, findStudent, checkinStudent)
+router.post('/', slackVerification, admin, findAdmin, findStudent, checkinStudent)
 router.post('/', (req, res) => {
   let time = req.body.requestTime
 
