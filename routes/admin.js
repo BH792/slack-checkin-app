@@ -42,16 +42,19 @@ function courseSelection(req, res, next) {
     ]
   })
     .then(course => {
+      let students = {}
+      course.students.map(student => students[student.name] = true)
       let checkins = course.checkins.map(checkin => {
         // 60 char width message
         let name = checkin.Student.name
-        let space = checkin.Student.name.length > 0 ?
+        let space = checkin.Student.name.length < 52 ?
                     ' '.repeat(52 - checkin.Student.name.length) :
                     ' '
         let time = checkin.time.toLocaleTimeString()
+        delete students[name]
         return name + space + time
       })
-      res.send(interactiveMsg.checkinValidation(courseName, checkins))
+      res.send(interactiveMsg.checkinValidation(courseName, checkins, Object.keys(students)))
     })
 }
 

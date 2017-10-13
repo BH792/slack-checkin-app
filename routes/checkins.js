@@ -28,7 +28,23 @@ function findStudent(req, res, next) {
     })
 }
 
-router.post('/', slackVerification, admin, findStudent)
+function checkinStudent(req, res, next) {
+  Checkin.findOne({
+    where: {
+      studentId: req.body.student.id,
+      date: req.body.requestTime
+    }
+  })
+    .then(result => {
+      if (result) {
+        res.send(`You have already checked today in at ${result.time.toLocaleTimeString()}`)
+      } else {
+        next()
+      }
+    })
+}
+
+router.post('/', slackVerification, admin, findStudent, checkinStudent)
 router.post('/', (req, res) => {
   let time = req.body.requestTime
 

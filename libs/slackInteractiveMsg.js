@@ -31,17 +31,19 @@ const menu = {
     }
   ]
 }
-
-const checkinValidation = (courseName, checkinsList) => {
+//
+const checkinValidation = (courseName, checkinsList, absences) => {
+  let text = "```Name" + ' '.repeat(52) + "Time\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
   return {
     "text": `Validate Attendance for ${courseName}`,
     "attachments": [
       {
-        "text": `Name${' '.repeat(52)}Time\n${checkinsList.join('\n')}`,
+        "text": text,
         "fallback": "fallback message",
         "callback_id": "checkinValidation",
         "color": "#3AA3E3",
         "attachment_type": "default",
+        "mrkdwn_in": ["text", "pretext"],
         "actions": [
           {
             "name": "cohort_validation_action",
