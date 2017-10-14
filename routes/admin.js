@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Student, Course, Checkin } = require('../server/models')
+const { Student, Course, Checkin, Admin } = require('../server/models')
 const slackVerification = require('../libs/slackTokenVerification')
 const interactiveMsg = require('../libs/slackInteractiveMsg')
 
@@ -34,7 +34,7 @@ function courseSelection(req, res, next) {
         where: {
           date: req.body.requestTime.toLocaleDateString()
         },
-        include: [Student]
+        include: [{all: true}]
       } , {
         model: Student,
         as: 'students'
@@ -51,15 +51,31 @@ function courseSelection(req, res, next) {
                     ' '.repeat(42 - checkin.Student.name.length) :
                     ' '
         let time = checkin.time.toLocaleTimeString()
+        let validated = checkin.Admin ? checkin.Admin.name : 'No'
         delete students[name]
-        return name + space + time
+        return name + space + time + '   ' + validated
       })
-      res.send(interactiveMsg.checkinValidation(courseName, checkins, Object.keys(students)))
+      res.send(interactiveMsg.checkinValidation(courseName, course.id, checkins, Object.keys(students)))
     })
 }
 
 function checkinValidation(req, res, next) {
-  res.send(`Successfully validated for ${req.body.requestTime.toLocaleDateString()}`)
+  Admin.findOne({
+    where: {slackId: req.body.user.id}
+  })
+    .then(admin => {
+      req.adminId = admin.id
+      Checkin.update(
+        { adminId: req.adminId },
+        { where: {
+          courseId: req.body.actions[0].value,
+          adminId: null
+          }
+        }
+      );
+      res.send(`Successfully validated for ${req.body.requestTime.toLocaleDateString()}`)
+    })
+
 }
 
 module.exports = router;

@@ -32,8 +32,8 @@ const menu = {
   ]
 }
 //
-const checkinValidation = (courseName, checkinsList, absences) => {
-  let text = "```Name" + ' '.repeat(42) + "Time\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
+const checkinValidation = (courseName, courseId, checkinsList, absences) => {
+  let text = "```Name" + ' '.repeat(38) + "Time       Validated\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
   return {
     "text": `Validate Attendance for ${courseName}`,
     "attachments": [
@@ -50,6 +50,7 @@ const checkinValidation = (courseName, checkinsList, absences) => {
             "text": "Verify Checkins",
             "type": "button",
             "style": "primary",
+            "value": courseId,
             "options": "validate"
           }
         ]

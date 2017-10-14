@@ -13,7 +13,15 @@ module.exports = {
         references: {
           model: 'Students',
           key: 'id',
-          as: 'courseId'
+          as: 'studentId'
+        }
+      },
+      adminId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Admins',
+          key: 'id',
+          as: 'adminId'
         }
       },
       courseId: {

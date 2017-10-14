@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    adminId: {
+      type: DataTypes.INTEGER,
+    },
     date: {
       type: DataTypes.DATEONLY,
       allowNull: false
@@ -24,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     });
     Checkin.belongsTo(models.Course, {
       foreignKey: 'courseId',
+    });
+    Checkin.belongsTo(models.Admin, {
+      foreignKey: 'adminId',
     });
   }
 

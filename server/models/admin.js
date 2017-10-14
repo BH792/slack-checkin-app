@@ -11,5 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
+  Admin.associate = (models) => {
+    Admin.hasMany(models.Checkin, {
+      foreignKey: 'adminId',
+      as: 'checkins'
+    });
+  }
+
   return Admin;
 };
