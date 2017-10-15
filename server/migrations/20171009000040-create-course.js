@@ -11,6 +11,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      slackId: {
+        type: Sequelize.STRING(10),
+        allowNull: false
+      },
       startDate: {
         type: Sequelize.DATEONLY,
         allowNull: false

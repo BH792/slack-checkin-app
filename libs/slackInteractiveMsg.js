@@ -1,37 +1,41 @@
-const menu = {
-  "text": "Administrator menu",
-  "attachments": [
-    {
-      "text": "Choose a cohort",
-      "fallback": "fallback message",
-      "callback_id": "courseSelection",
-      "color": "#3AA3E3",
-      "attachment_type": "default",
-      "actions": [
-        {
-          "name": "course_list",
-          "text": "Choose a course",
-          "type": "select",
-          "options": [
-            {
-              "text": "web-080717",
-              "value": "web-080717"
-            },
-            {
-              "text": "web-082817",
-              "value": "web-082817"
-            },
-            {
-              "text": "web-091917",
-              "value": "web-091917"
-            },
-          ]
-        }
-      ]
-    }
-  ]
+const menu = (cohorts) => {
+// cohorts should be array of objects with keys: text & value
+// both should correspond to the cohort name
+  return {
+    "text": "Administrator menu",
+    "attachments": [
+      {
+        "text": "Choose a cohort",
+        "fallback": "fallback message",
+        "callback_id": "courseSelection",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "actions": [
+          {
+            "name": "course_list",
+            "text": "Choose a course",
+            "type": "select",
+            "options": [
+              {
+                "text": "web-080717",
+                "value": "web-080717"
+              },
+              {
+                "text": "web-082817",
+                "value": "web-082817"
+              },
+              {
+                "text": "web-091917",
+                "value": "web-091917"
+              },
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }
-//
+
 const checkinValidation = (courseName, courseId, checkinsList, absences) => {
   let text = "```Name" + ' '.repeat(38) + "Time       Validated\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
   return {

@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    slackId: {
+      type: DataTypes.STRING(10),
+      allowNull: false
+    },
     startDate: {
       type: DataTypes.DATEONLY,
       allowNull: false
