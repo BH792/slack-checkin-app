@@ -1,8 +1,69 @@
-const menu = (cohorts) => {
-// cohorts should be array of objects with keys: text & value
-// both should correspond to the cohort name
+const menu = {
+  "text": "Administrator Menu",
+  "attachments": [
+    {
+      "text": "What would you like to do?",
+      "fallback": "fallback message",
+      "callback_id": "adminMenu",
+      "color": "#3AA3E3",
+      "attachment_type": "default",
+      "actions": [
+        {
+          "name": "admin_action",
+          "text": "Verify Checkins",
+          "type": "button",
+          "style": "primary",
+          "value": "cohortSelection",
+          "options": "validate"
+        },
+        {
+          "name": "admin_action",
+          "text": "Add a Cohort",
+          "type": "button",
+          "style": "primary",
+          "value": "addCohort",
+          "options": "validate"
+        },
+      ]
+    }
+  ]
+}
+
+const addCohort = (channels) => {
+  let actions = {
+    "name": "channels_list",
+    "text": "Choose the cohort channel to add",
+    "type": "select",
+    "data_source": "channels"
+  }
+
+  if (channels) {
+    actions = {
+      "name": "channels_list",
+      "text": "Choose the cohort channel to add",
+      "type": "select",
+      "options": channels
+    }
+  }
+
   return {
-    "text": "Administrator menu",
+    "text": "Add a new cohort",
+    "attachments": [
+      {
+        "fallback": "Upgrade your Slack client to use messages like these.",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "callback_id": "addCohortSelection",
+        "actions": [actions]
+      }
+    ]
+  }
+}
+
+const cohortSelection = (cohorts) => {
+// cohorts should be array of objects with keys: text & value
+  return {
+    "text": "Cohort validation",
     "attachments": [
       {
         "text": "Choose a cohort",
@@ -15,20 +76,7 @@ const menu = (cohorts) => {
             "name": "course_list",
             "text": "Choose a course",
             "type": "select",
-            "options": [
-              {
-                "text": "web-080717",
-                "value": "web-080717"
-              },
-              {
-                "text": "web-082817",
-                "value": "web-082817"
-              },
-              {
-                "text": "web-091917",
-                "value": "web-091917"
-              },
-            ]
+            "options": cohorts
           }
         ]
       }
@@ -64,6 +112,8 @@ const checkinValidation = (courseName, courseId, checkinsList, absences) => {
 }
 
 module.exports = {
-  menu: menu,
-  checkinValidation: checkinValidation
+  menu,
+  cohortSelection,
+  addCohort,
+  checkinValidation
 }

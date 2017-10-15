@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     courseId: {
       type: DataTypes.INTEGER,
-      allowNull: false
     },
     adminId: {
       type: DataTypes.INTEGER,

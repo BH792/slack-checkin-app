@@ -5,7 +5,6 @@ const slackVerification = require('../libs/slackTokenVerification')
 const adminMenu = require('../libs/slackInteractiveMsg').menu
 
 function admin(req, res, next) {
-  console.log(req.body.text);
   if (req.body.text === 'admin') {
     res.json(adminMenu)
   } else {
