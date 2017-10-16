@@ -203,18 +203,21 @@ function checkinValidation(req, res, next) {
     where: {slackId: req.body.user.id}
   })
     .then(admin => {
-      req.adminId = admin.id
-      Checkin.update(
-        { adminId: req.adminId },
-        { where: {
-          courseId: req.body.actions[0].value,
-          adminId: null
+      if (admin) {
+        Checkin.update(
+          { adminId: admin.id },
+          { where: {
+            courseId: req.body.actions[0].value,
+            date: req.body.requestTime.toLocaleDateString(),
+            adminId: null
+            }
           }
-        }
-      );
-      res.send(`Successfully validated for ${req.body.requestTime.toLocaleDateString()}`)
+        );
+        res.send(`Successfully validated for ${req.body.requestTime.toLocaleDateString()}`)
+      } else {
+        res.send('Sorry, you do not appear to be an admin')
+      }
     })
-
 }
 
 module.exports = router;
