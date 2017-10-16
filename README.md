@@ -27,24 +27,32 @@ This menu gives administrators the ability to
 
 ### View/Verify
 Selecting a course
+
 ![Admin View](/docs/images/admin_cohort_selection.png)
 
 Viewing checkins for a course for the current day
+
 ![Admin Checkins](/docs/images/admin_viewing_checkins.png)
 
 ### Initialize Course
 Selecting a course to initialize
+
 ![Admin View](/docs/images/admin_add_course.png)
+
 All non-admin members of the course will be added the the students table under the name they have entered in their Slack profile. A course can only be initialized once.  If you need to edit a student's current course, you will need to use the "Update Student" menu.
 
 ### Update Student
 Selecting a student to update
+
 ![Admin View](/docs/images/admin_select_student.png)
+
 The dropdown will be populated with all current students in the format of "NAME (SLACK ID)"
 It's recommended to search by Slack ID to account for similar names
 
 Updating a student
+
 ![Admin View](/docs/images/admin_update_student.png)
+
 Selecting a course will update the student's current course.  Choose "None" will set the current course to null
 
 ## Contributing
