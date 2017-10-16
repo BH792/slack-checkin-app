@@ -25,6 +25,8 @@ const adminMenuRouter = {
   adminMenu,
   courseSelection,
   addCohortSelection,
+  studentSelection,
+  studentUpdateSelection,
   checkinValidation
 }
 
@@ -54,12 +56,22 @@ function adminMenu(req, res, next) {
         })
         res.send(interactiveMsg.cohortSelection(courses))
       })
+  } else if (req.body.actions[0].value === 'studentSelection') {
+    Student.findAll()
+      .then(results => {
+        let students = results.map(student => {
+          return {
+            text: `${student.name} (${student.slackId})`,
+            value: `${student.name} (${student.slackId})`
+          }
+        })
+        res.send(interactiveMsg.studentSelection(students))
+      })
   }
 }
 
 function courseSelection(req, res, next) {
   const courseId = req.body.actions[0].selected_options[0].value;
-  console.log(courseId);
   Course.findOne({
     where: {id: parseInt(courseId)},
     include: [
@@ -106,7 +118,6 @@ function addCohortSelection(req, res, next) {
     .then(json => {
       let nameDate = json.channel.name.split('-')[1]
       let date = '20' + nameDate.slice(4) + '-' + nameDate.slice(0, 2) + '-' + nameDate.slice(2, 4)
-      console.log(date);
       Course.findOrCreate({
         where: {
           name: json.channel.name,
@@ -115,27 +126,75 @@ function addCohortSelection(req, res, next) {
         }
       })
         .spread((course, created) => {
-          console.log(json);
           if (created) {
+            res.send('Initializing cohort')
+            let memberTotal = json.channel.members.length
+            let memberCounter = 0
+            const delayedResponse = () => {
+              memberCounter += 1;
+              if (memberCounter === memberTotal) {
+                slackAdapter.postResp(req.body.response_url, {text: `${course.name} successfully initialized`})
+              }
+            }
+
             json.channel.members.forEach(userId => {
               slackAdapter.usersInfo(userId)
                 .then(json => {
                   if (!json.user.is_admin) {
-                    Student.findOrCreate({
-                      where: {
-                        name: json.user.profile.real_name_normalized,
-                        slackId: json.user.id,
-                        courseId: course.id
-                      }
+                    Student.findOne({
+                      where: {slackId: json.user.id}
                     })
+                      .then(student => {
+                        if (!student) {
+                          Student.create({
+                            name: json.user.profile.real_name_normalized,
+                            slackId: json.user.id,
+                            courseId: course.id
+                          }).then(delayedResponse)
+                        } else {
+                          delayedResponse()
+                        }
+                      })
+                  } else {
+                    delayedResponse()
                   }
                 })
             })
-            res.send('Initializing cohort')
           } else {
             res.send('Cohort has already been initialized')
           }
         })
+    })
+}
+
+function studentSelection(req, res, next) {
+  const studentValue = req.body.actions[0].selected_options[0].value;
+  const studentSlackId = studentValue.split('(')[1].split(')')[0]
+  Course.findAll()
+    .then(results => {
+      let courses = results.map(course => {
+        return {
+          text: course.name,
+          value: `${course.id} ${studentSlackId}`
+        }
+      })
+      courses.unshift({text: 'None', value: `null ${studentSlackId}`})
+      res.send(interactiveMsg.studentUpdate(studentValue, courses ))
+    })
+}
+
+function studentUpdateSelection(req, res, next) {
+  const value = req.body.actions[0].selected_options[0].value.split(' ');
+  const courseId = value[0] === "null" ? null : value[0]
+  const studentSlackId = value[1]
+  Student.findOne({
+    where: {slackId: studentSlackId}
+  })
+    .then(student => {
+      student.update({
+        courseId: courseId
+      })
+        .then(res.send(`Successfully updated ${student.name}'s course.`))
     })
 }
 

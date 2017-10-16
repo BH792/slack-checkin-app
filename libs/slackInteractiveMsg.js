@@ -20,8 +20,16 @@ const menu = {
           "name": "admin_action",
           "text": "Add a Cohort",
           "type": "button",
-          "style": "primary",
+          "style": "default",
           "value": "addCohort",
+          "options": "validate"
+        },
+        {
+          "name": "admin_action",
+          "text": "Update a Student",
+          "type": "button",
+          "style": "default",
+          "value": "studentSelection",
           "options": "validate"
         },
       ]
@@ -84,6 +92,54 @@ const cohortSelection = (cohorts) => {
   }
 }
 
+const studentSelection = (students) => {
+  // students should be array of objects with keys: text & value
+    return {
+      "text": "Update student's course",
+      "attachments": [
+        {
+          "text": "Choose a Student",
+          "fallback": "fallback message",
+          "callback_id": "studentSelection",
+          "color": "#3AA3E3",
+          "attachment_type": "default",
+          "actions": [
+            {
+              "name": "student_list",
+              "text": "Choose a student",
+              "type": "select",
+              "options": students
+            }
+          ]
+        }
+      ]
+    }
+}
+
+const studentUpdate = (name, cohorts) => {
+// cohorts should be array of objects with keys: text & value
+  return {
+    "text": `Changing cohort for ${name}`,
+    "attachments": [
+      {
+        "text": "Choose a new cohort",
+        "fallback": "fallback message",
+        "callback_id": "studentUpdateSelection",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "actions": [
+          {
+            "name": "course_list",
+            "text": "Choose a new course",
+            "type": "select",
+            "options": cohorts
+          }
+        ]
+      }
+    ]
+  }
+}
+
 const checkinValidation = (courseName, courseId, checkinsList, absences) => {
   let text = "```Name" + ' '.repeat(38) + "Time       Validated\n" + checkinsList.join('\n') + "\n\nAbsent Students\n" + absences.join('\n') + "```"
   return {
@@ -115,5 +171,7 @@ module.exports = {
   menu,
   cohortSelection,
   addCohort,
+  studentSelection,
+  studentUpdate,
   checkinValidation
 }

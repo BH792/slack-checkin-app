@@ -5,8 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     courseId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+      type: DataTypes.INTEGER
     },
     slackId: {
       type: DataTypes.STRING(10),
