@@ -69,7 +69,9 @@ router.post('/', (req, res) => {
       date: time,
       time: time
     })
-    res.send(`Successfully checked in at: ${time.toLocaleTimeString()}`)
+      .then(() => {
+        res.send(`Successfully checked in at: ${time.toLocaleTimeString()}`)
+      })
   }
 })
 

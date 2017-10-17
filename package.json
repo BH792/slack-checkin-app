@@ -4,7 +4,7 @@
   "private": true,
   "description": "Enable checkin command in slack",
   "scripts": {
-    "start:dev": "DEBUG=slack-checkin-app:* nodemon ./bin/www",
+    "start:dev": "DEBUG=slack-checkin-app:* nodemon --exec 'node -r dotenv/config' ./bin/www",
     "start": "node ./bin/www",
     "db:create": "sequelize db:create",
     "db:migrate": "sequelize db:migrate",
@@ -32,6 +32,7 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
+    "dotenv": "^4.0.0",
     "nodemon": "^1.12.1"
   }
 }
