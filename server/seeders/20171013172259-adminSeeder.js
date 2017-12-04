@@ -3,7 +3,7 @@ module.exports = {
     return queryInterface.bulkInsert('Admins', [
       {
         name: 'Bobby Huang',
-        slackId: 'U6FAN6MSN',
+        slackId: 'U7F246ACB',
         createdAt: new Date(),
         updatedAt: new Date()
       },
