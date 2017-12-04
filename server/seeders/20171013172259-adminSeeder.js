@@ -2,6 +2,12 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Admins', [
       {
+        name: 'Bobby Huang',
+        slackId: 'U6FAN6MSN',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
         name: 'Alex Griffith',
         slackId: 'U0DQ4N2MN',
         createdAt: new Date(),
