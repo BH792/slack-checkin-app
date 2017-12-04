@@ -1,4 +1,5 @@
-const slackToken = process.env.SLACK_TOKEN || process.env.SLACK_TESING_TOKEN
+const slackToken = process.env.SLACK_API_TOKEN
+const testingSlackToken = process.env.SLACK_TESING_TOKEN
 
 module.exports = function slackVerification(req, res, next) {
   if (req.body.token === slackToken || req.body.token === testingSlackToken) {
